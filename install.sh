@@ -12,10 +12,21 @@ ANDROID_URL="https://dl.google.com/android/repository/commandlinetools-linux-110
 # Define install directories
 FLUTTER_DIR="$XDG_LIB_HOME/flutter"
 ANDROID_DIR="$XDG_LIB_HOME/android"
+ANDROID_CMDLINE_TOOLS_DIR="$ANDROID_DIR/cmdline-tools/latest"
 
 # Create necessary directories
 mkdir -p "$FLUTTER_DIR"
 mkdir -p "$ANDROID_DIR"
+mkdir -p "$ANDROID_CMDLINE_TOOLS_DIR"
+
+# Check if ANDROID_HOME and ANDROID_SDK_ROOT are set
+if [ -z "$ANDROID_HOME" ] || [ -z "$ANDROID_SDK_ROOT" ]; then
+    echo "Warning: ANDROID_HOME or ANDROID_SDK_ROOT are not set."
+    echo "Please set them in your .profile or .bash_profile:"
+    echo "  export ANDROID_HOME='$XDG_LIB_HOME/android'"
+    echo "  export ANDROID_SDK_ROOT='$XDG_LIB_HOME/android'"
+    echo "Then, run 'source ~/.profile' or 'source ~/.bash_profile' to apply the changes."
+fi
 
 # Download and install Flutter SDK
 echo "Downloading Flutter SDK..."
@@ -31,4 +42,7 @@ curl -L "$ANDROID_URL" -o /tmp/android_tools.zip
 echo "Extracting Android SDK Command Line Tools..."
 unzip /tmp/android_tools.zip -d "$ANDROID_DIR"
 rm /tmp/android_tools.zip
-echo "Android SDK Command Line Tools installed to $ANDROID_DIR"
+
+# Move cmdline-tools to the correct location
+mv "$ANDROID_DIR/cmdline-tools/*" "$ANDROID_CMDLINE_TOOLS_DIR"
+echo "Android SDK Command Line Tools installed to $ANDROID_CMDLINE_TOOLS_DIR"
