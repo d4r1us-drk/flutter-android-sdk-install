@@ -13,6 +13,7 @@ ANDROID_URL="https://dl.google.com/android/repository/commandlinetools-linux-110
 FLUTTER_DIR="$XDG_LIB_HOME/flutter"
 ANDROID_DIR="$XDG_LIB_HOME/android"
 ANDROID_CMDLINE_TOOLS_DIR="$ANDROID_DIR/cmdline-tools/latest"
+ANDROID_CMDLINE_TOOLS_TEMP_DIR="/tmp/cmdline-tools"
 
 # Create necessary directories
 mkdir -p "$FLUTTER_DIR"
@@ -40,9 +41,10 @@ echo "Flutter SDK installed to $FLUTTER_DIR"
 echo "Downloading Android SDK Command Line Tools..."
 curl -L "$ANDROID_URL" -o /tmp/android_tools.zip
 echo "Extracting Android SDK Command Line Tools..."
-unzip /tmp/android_tools.zip -d "$ANDROID_DIR"
+unzip /tmp/android_tools.zip -d "$ANDROID_CMDLINE_TOOLS_TEMP_DIR"
 rm /tmp/android_tools.zip
 
 # Move cmdline-tools to the correct location
-mv "$ANDROID_DIR/cmdline-tools/*" "$ANDROID_CMDLINE_TOOLS_DIR"
+mv "$ANDROID_CMDLINE_TOOLS_TEMP_DIR/"* "$ANDROID_CMDLINE_TOOLS_DIR"
+rmdir "$ANDROID_CMDLINE_TOOLS_TEMP_DIR"
 echo "Android SDK Command Line Tools installed to $ANDROID_CMDLINE_TOOLS_DIR"
