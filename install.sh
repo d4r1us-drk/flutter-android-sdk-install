@@ -6,14 +6,13 @@ if [ -z "$XDG_LIB_HOME" ]; then
 fi
 
 # Define URLs
-FLUTTER_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.2-stable.tar.xz"
+FLUTTER_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.24.3-stable.tar.xz"
 ANDROID_URL="https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip"
 
 # Define install directories
 FLUTTER_DIR="$XDG_LIB_HOME/flutter"
 ANDROID_DIR="$XDG_LIB_HOME/android"
 ANDROID_CMDLINE_TOOLS_DIR="$ANDROID_DIR/cmdline-tools/latest"
-ANDROID_CMDLINE_TOOLS_TEMP_DIR="/tmp/cmdline-tools"
 
 # Create necessary directories
 mkdir -p "$FLUTTER_DIR"
@@ -41,10 +40,7 @@ echo "Flutter SDK installed to $FLUTTER_DIR"
 echo "Downloading Android SDK Command Line Tools..."
 curl -L "$ANDROID_URL" -o /tmp/android_tools.zip
 echo "Extracting Android SDK Command Line Tools..."
-unzip /tmp/android_tools.zip -d "$ANDROID_CMDLINE_TOOLS_TEMP_DIR"
-rm /tmp/android_tools.zip
-
-# Move cmdline-tools to the correct location
-mv "$ANDROID_CMDLINE_TOOLS_TEMP_DIR/"* "$ANDROID_CMDLINE_TOOLS_DIR"
-rmdir "$ANDROID_CMDLINE_TOOLS_TEMP_DIR"
+unzip -q /tmp/android_tools.zip -d /tmp
+mv /tmp/cmdline-tools/* "$ANDROID_CMDLINE_TOOLS_DIR"
+rm -rf /tmp/cmdline-tools /tmp/android_tools.zip
 echo "Android SDK Command Line Tools installed to $ANDROID_CMDLINE_TOOLS_DIR"
